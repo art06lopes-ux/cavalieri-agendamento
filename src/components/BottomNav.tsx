@@ -17,7 +17,7 @@ export function BottomNav() {
         {ITENS.map((i) => {
           const ativo = path === i.href || (i.href !== '/' && path.startsWith(i.href))
           return (
-            <Link key={i.href} href={i.href as never} className={`py-2.5 text-center text-[11px] ${ativo ? 'text-[#C0C5CE] font-semibold' : 'text-zinc-500'}`}>
+            <Link key={i.href} href={i.href as never} className={`py-2.5 text-center text-[11px] ${ativo ? 'text-prata font-semibold' : 'text-zinc-400'}`}>
               <span className="block text-lg leading-none">{i.icone}</span>
               {i.rotulo}
             </Link>

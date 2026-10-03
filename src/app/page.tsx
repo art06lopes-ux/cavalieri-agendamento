@@ -17,11 +17,11 @@ export default function Home() {
       </section>
       <div className="px-6 py-6 max-w-md mx-auto space-y-3 pb-28">
         <Card className="p-4 flex items-center justify-between">
-          <div><p className="font-semibold">Fidelidade</p><p className="text-zinc-500 text-xs">A cada 10 cortes, 1 grátis</p></div>
+          <div><p className="font-semibold">Fidelidade</p><p className="text-zinc-400 text-xs">A cada 10 cortes, 1 grátis</p></div>
           <Link href="/fidelidade" className="text-prata text-sm font-semibold">Ver meu carnê →</Link>
         </Card>
         <Card className="p-4 flex items-center justify-between">
-          <div><p className="font-semibold">Produtos</p><p className="text-zinc-500 text-xs">O que tem na loja</p></div>
+          <div><p className="font-semibold">Produtos</p><p className="text-zinc-400 text-xs">O que tem na loja</p></div>
           <Link href="/produtos" className="text-prata text-sm font-semibold">Ver vitrine →</Link>
         </Card>
         <p className="text-zinc-400 text-xs text-center pt-2">Seg–Sáb · 09:00–20:00</p>
