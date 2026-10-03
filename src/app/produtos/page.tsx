@@ -6,7 +6,7 @@ export const dynamic = 'force-dynamic'
 
 export default async function ProdutosPage() {
   const admin = createAdminClient()
-  const { data, error } = await (admin as any).from('products').select('id, nome, descricao, preco_venda, purpose, ativo').eq('ativo', true).in('purpose', ['revenda', 'ambos']).order('nome')
+  const { data, error } = await (admin as any).from('products').select('id, nome, descricao, preco_venda, foto_url, purpose, ativo').eq('ativo', true).in('purpose', ['revenda', 'ambos']).order('nome')
   if (error) {
     return (
       <div className="min-h-screen bg-black text-white px-4 pt-8 pb-10 max-w-md mx-auto">

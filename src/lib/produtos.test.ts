@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { somenteVitrine } from './produtos'
+import { somenteVitrine, iniciaisProduto } from './produtos'
 
 describe('somenteVitrine', () => {
   it('remove uso_interno e inativos, nunca vaza preco_compra', () => {
@@ -16,5 +16,16 @@ describe('somenteVitrine', () => {
       { id: '9', nome: 'Kit', descricao: null, preco_venda: 99, purpose: 'ambos', ativo: true },
     ])
     expect(out).toHaveLength(1)
+  })
+  it('mantém foto_url e normaliza vazio para null', () => {
+    const out = somenteVitrine([
+      { id: '1', nome: 'Pomada', descricao: null, preco_venda: 40, foto_url: 'https://x/f.jpg', purpose: 'revenda', ativo: true },
+      { id: '2', nome: 'Gel', descricao: null, preco_venda: 20, foto_url: '', purpose: 'revenda', ativo: true },
+    ])
+    expect(out[0].foto_url).toBe('https://x/f.jpg')
+    expect(out[1].foto_url).toBeNull()
+  })
+  it('iniciais de duas palavras ignorando conectivo', () => {
+    expect(iniciaisProduto('Gel de Cabelo')).toBe('GC')
   })
 })
