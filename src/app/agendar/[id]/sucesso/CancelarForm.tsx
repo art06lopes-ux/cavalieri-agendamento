@@ -43,7 +43,7 @@ export function CancelarForm({ id }: { id: string }) {
           type="button"
           disabled={enviando || !telefone.trim()}
           onClick={enviar}
-          className="rounded-xl border border-red-900 bg-red-950 text-red-300 text-sm px-4 disabled:opacity-50 hover:bg-red-900 shrink-0"
+          className="rounded-xl bg-prata text-black text-sm font-medium px-4 disabled:opacity-50 on-prata shrink-0"
         >
           {enviando ? '…' : 'Cancelar'}
         </button>

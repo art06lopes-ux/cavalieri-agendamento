@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { slots, reservar } from './actions'
 import { formatBRL } from '@/lib/format'
 import { todayISO } from '@/lib/dateRange'
+import { Card, Eyebrow } from '@/components/ui'
 
 type Servico = { id: string; nome: string; preco: number; duracao_minutos: number | null }
 type Barbeiro = { id: string; nome: string }
@@ -110,9 +111,19 @@ export function Wizard({ servicos, barbeiros }: { servicos: Servico[]; barbeiros
 
   return (
     <div key={etapa} className="animate-[fadeSlide_.25s_ease]">
+      <div
+        role="progressbar"
+        aria-valuemin={1}
+        aria-valuemax={6}
+        aria-valuenow={etapa + 1}
+        aria-label="Etapa do agendamento"
+        className="h-1 rounded bg-white/15 mb-5"
+      >
+        <div className="h-1 rounded bg-prata transition-all" style={{ width: `${((etapa + 1) / 6) * 100}%` }} />
+      </div>
       {etapa === 0 && (
         <div className="space-y-3">
-          <p className="text-zinc-400 text-sm">1 · Escolha o serviço</p>
+          <Eyebrow>1 · Escolha o serviço</Eyebrow>
           {servicos.map((s) => (
             <button
               key={s.id}
@@ -123,15 +134,15 @@ export function Wizard({ servicos, barbeiros }: { servicos: Servico[]; barbeiros
               }}
               className={`w-full text-left rounded-2xl border p-4 transition-all active:scale-[0.99] ${
                 serviceId === s.id
-                  ? 'border-white bg-white/10'
+                  ? 'border-[#C0C5CE] bg-[#C0C5CE]/10'
                   : 'border-white/10 bg-zinc-900/60 hover:border-white/25'
               }`}
             >
               <span className="flex items-center justify-between gap-2">
                 <span className="text-white font-semibold">{s.nome}</span>
-                <span className="text-white text-sm font-medium tabular-nums">{formatBRL(s.preco)}</span>
+                <span className="text-prata text-sm font-medium tabular-nums">{formatBRL(s.preco)}</span>
               </span>
-              <span className="text-zinc-500 text-xs mt-1 block">{s.duracao_minutos ?? 30} min</span>
+              <span className="text-zinc-400 text-xs mt-1 block">{s.duracao_minutos ?? 30} min</span>
             </button>
           ))}
         </div>
@@ -139,7 +150,7 @@ export function Wizard({ servicos, barbeiros }: { servicos: Servico[]; barbeiros
 
       {etapa === 1 && (
         <div className="space-y-3">
-          <p className="text-zinc-400 text-sm">2 · Com quem você quer cortar?</p>
+          <Eyebrow>2 · Com quem você quer cortar?</Eyebrow>
           <button
             type="button"
             onClick={() => {
@@ -161,13 +172,13 @@ export function Wizard({ servicos, barbeiros }: { servicos: Servico[]; barbeiros
               }}
               className="w-full flex items-center gap-3 rounded-2xl border border-white/10 bg-zinc-900/60 p-4 text-left hover:border-white/25 active:scale-[0.99] transition-all"
             >
-              <span className="w-11 h-11 rounded-full bg-white/10 ring-1 ring-white/15 flex items-center justify-center text-sm font-bold text-white shrink-0">
+              <span className="w-11 h-11 rounded-full bg-white/10 ring-1 ring-[#C0C5CE]/40 flex items-center justify-center text-sm font-bold text-white shrink-0">
                 {b.nome.charAt(0).toUpperCase()}
               </span>
               <span className="text-white font-semibold">{b.nome}</span>
             </button>
           ))}
-          <button type="button" onClick={() => setEtapa(0)} className="text-xs text-zinc-500 hover:text-white">
+          <button type="button" onClick={() => setEtapa(0)} className="text-xs text-zinc-400 hover:text-white">
             ← trocar serviço
           </button>
         </div>
@@ -175,7 +186,7 @@ export function Wizard({ servicos, barbeiros }: { servicos: Servico[]; barbeiros
 
       {etapa === 2 && (
         <div>
-          <p className="text-zinc-400 text-sm mb-3">3 · Escolha o dia</p>
+          <div className="mb-3"><Eyebrow>3 · Escolha o dia</Eyebrow></div>
           <div className="grid grid-cols-4 gap-2">
             {dias.map((d) => {
               const f = fmtDiaCurto(d)
@@ -193,16 +204,16 @@ export function Wizard({ servicos, barbeiros }: { servicos: Servico[]; barbeiros
                     ativo ? 'border-white bg-white text-black' : 'border-white/10 bg-zinc-900/60 text-white'
                   }`}
                 >
-                  <span className={`block text-[10px] uppercase ${ativo ? 'text-zinc-600' : 'text-zinc-500'}`}>{f.dow}</span>
+                  <span className={`block text-[10px] uppercase ${ativo ? 'text-zinc-600' : 'text-zinc-400'}`}>{f.dow}</span>
                   <span className="block text-lg font-bold leading-tight">
                     {f.dia}
-                    <span className={`text-xs font-normal ${ativo ? 'text-zinc-600' : 'text-zinc-500'}`}>/{f.mes}</span>
+                    <span className={`text-xs font-normal ${ativo ? 'text-zinc-600' : 'text-zinc-400'}`}>/{f.mes}</span>
                   </span>
                 </button>
               )
             })}
           </div>
-          <button type="button" onClick={() => setEtapa(1)} className="text-xs text-zinc-500 hover:text-white mt-4">
+          <button type="button" onClick={() => setEtapa(1)} className="text-xs text-zinc-400 hover:text-white mt-4">
             ← trocar barbeiro
           </button>
         </div>
@@ -210,8 +221,8 @@ export function Wizard({ servicos, barbeiros }: { servicos: Servico[]; barbeiros
 
       {etapa === 3 && (
         <div>
-          <p className="text-zinc-400 text-sm mb-1">4 · Horários livres</p>
-          <p className="text-zinc-500 text-xs mb-3 capitalize">
+          <div className="mb-1"><Eyebrow>4 · Horários livres</Eyebrow></div>
+          <p className="text-zinc-400 text-xs mb-3 capitalize">
             {fmtDataLonga(dia)}
             {staffId !== 'qualquer' ? ` · ${nomes[staffId]}` : ''}
           </p>
@@ -232,7 +243,7 @@ export function Wizard({ servicos, barbeiros }: { servicos: Servico[]; barbeiros
                     type="button"
                     onClick={() => setInicioIso(s)}
                     className={`rounded-xl border py-3 text-sm font-semibold tabular-nums transition-all active:scale-[0.97] ${
-                      ativo ? 'border-white bg-white text-black' : 'border-white/10 bg-zinc-900/60 text-white'
+                      ativo ? 'border-[#C0C5CE] bg-[#C0C5CE] text-black on-prata' : 'border-white/10 bg-zinc-900/60 text-white'
                     }`}
                   >
                     {hhmm}
@@ -243,31 +254,36 @@ export function Wizard({ servicos, barbeiros }: { servicos: Servico[]; barbeiros
           ) : (
             <div className="rounded-2xl border border-white/10 bg-zinc-900/60 p-5 text-center">
               <p className="text-white font-medium mb-1">Sem horário livre neste dia</p>
-              <p className="text-zinc-500 text-xs">Tente outro dia ou outro barbeiro.</p>
+              <p className="text-zinc-400 text-xs">Tente outro dia ou outro barbeiro.</p>
             </div>
           )}
-          {erro && <p className="text-red-400 text-sm mt-3">{erro}</p>}
+          {erro && (
+            <div aria-live="polite">
+              <p className="text-red-400 text-sm mt-3">{erro}</p>
+            </div>
+          )}
           <div className="flex gap-2 mt-4">
-            <button type="button" onClick={() => setEtapa(2)} className="text-xs text-zinc-500 hover:text-white px-2">
+            <button type="button" onClick={() => setEtapa(2)} className="text-xs text-zinc-400 hover:text-white px-2">
               ← dia
             </button>
             <button
               type="button"
               disabled={!podeAvancarHorario}
               onClick={() => setEtapa(4)}
-              className="flex-1 rounded-xl bg-white text-black text-sm font-semibold py-3 disabled:opacity-40"
+              className="flex-1 rounded-xl bg-[#C0C5CE] text-black text-sm font-semibold py-3 disabled:opacity-40 on-prata"
             >
               Continuar
             </button>
           </div>
+          {!podeAvancarHorario && <p className="text-xs text-zinc-400 mt-2">Escolha um horário para continuar.</p>}
         </div>
       )}
 
       {etapa === 4 && (
         <div className="space-y-3">
-          <p className="text-zinc-400 text-sm">5 · Seus dados</p>
+          <Eyebrow>5 · Seus dados</Eyebrow>
           <div>
-            <label className="block text-xs font-medium text-zinc-500 mb-1.5">Nome *</label>
+            <label className="block text-xs font-medium text-zinc-400 mb-1.5">Nome *</label>
             <input
               value={nome}
               onChange={(e) => setNome(e.target.value)}
@@ -277,7 +293,7 @@ export function Wizard({ servicos, barbeiros }: { servicos: Servico[]; barbeiros
             />
           </div>
           <div>
-            <label className="block text-xs font-medium text-zinc-500 mb-1.5">WhatsApp *</label>
+            <label className="block text-xs font-medium text-zinc-400 mb-1.5">WhatsApp *</label>
             <input
               value={telefone}
               onChange={(e) => setTelefone(e.target.value)}
@@ -288,24 +304,31 @@ export function Wizard({ servicos, barbeiros }: { servicos: Servico[]; barbeiros
             />
           </div>
           <div>
-            <label className="block text-xs font-medium text-zinc-500 mb-1.5">Data de nascimento *</label>
+            <label className="block text-xs font-medium text-zinc-400 mb-1.5">Data de nascimento *</label>
             <input type="date" value={nascimento} max={new Date().toISOString().slice(0, 10)} onChange={(e) => setNascimento(e.target.value)} className="w-full rounded-xl bg-zinc-900/80 border border-white/10 px-3 py-3 text-white outline-none focus:border-white/40 text-base" />
           </div>
           <label className="flex gap-2 text-xs text-zinc-400"><input type="checkbox" checked={lgpd} onChange={(e) => setLgpd(e.target.checked)} /> Autorizo salvar meus dados para agendamento e fidelidade (LGPD).</label>
-          {erro && <p className="text-red-400 text-sm">{erro}</p>}
+          {erro && (
+            <div aria-live="polite">
+              <p className="text-red-400 text-sm">{erro}</p>
+            </div>
+          )}
           <div className="flex gap-2">
-            <button type="button" onClick={() => setEtapa(3)} className="text-xs text-zinc-500 hover:text-white px-2">
+            <button type="button" onClick={() => setEtapa(3)} className="text-xs text-zinc-400 hover:text-white px-2">
               ← horário
             </button>
             <button
               type="button"
               disabled={!nome.trim() || !telefone.trim() || !nascimento || !lgpd}
               onClick={() => setEtapa(5)}
-              className="flex-1 rounded-xl bg-white text-black text-sm font-semibold py-3 disabled:opacity-40"
+              className="flex-1 rounded-xl bg-prata text-black text-sm font-semibold py-3 disabled:opacity-40 on-prata"
             >
               Revisar
             </button>
           </div>
+          {(!nome.trim() || !telefone.trim() || !nascimento || !lgpd) && (
+            <p className="text-xs text-zinc-400 mt-2">Preencha nome, data de nascimento e autorize o uso dos dados.</p>
+          )}
         </div>
       )}
 
@@ -323,16 +346,20 @@ export function Wizard({ servicos, barbeiros }: { servicos: Servico[]; barbeiros
             <ResumoLinha k="Cliente" v={`${nome} · ${telefone}`} />
             <ResumoLinha k="Nascimento" v={nascimento} />
           </div>
-          {erro && <p className="text-red-400 text-sm mt-3">{erro}</p>}
+          {erro && (
+            <div aria-live="polite">
+              <p className="text-red-400 text-sm mt-3">{erro}</p>
+            </div>
+          )}
           <div className="flex gap-2 mt-4">
-            <button type="button" onClick={() => setEtapa(4)} className="text-xs text-zinc-500 hover:text-white px-2">
+            <button type="button" onClick={() => setEtapa(4)} className="text-xs text-zinc-400 hover:text-white px-2">
               ← dados
             </button>
             <button
               type="button"
               disabled={enviando}
               onClick={confirmar}
-              className="flex-1 rounded-xl bg-white text-black text-sm font-semibold py-3 disabled:opacity-50"
+              className="flex-1 rounded-xl bg-prata text-black text-sm font-semibold py-3 disabled:opacity-50 on-prata"
             >
               {enviando ? 'Reservando…' : 'Confirmar agendamento'}
             </button>
@@ -346,7 +373,7 @@ export function Wizard({ servicos, barbeiros }: { servicos: Servico[]; barbeiros
 function ResumoLinha({ k, v }: { k: string; v: string }) {
   return (
     <p className="flex justify-between gap-3">
-      <span className="text-zinc-500">{k}</span>
+      <span className="text-zinc-400">{k}</span>
       <span className="text-white font-medium text-right capitalize">{v}</span>
     </p>
   )

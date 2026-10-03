@@ -2,6 +2,7 @@ import { createAdminClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
 import { formatBRL, formatHora } from '@/lib/format'
 import { toLocalDateISO } from '@/lib/dateRange'
+import { Card } from '@/components/ui'
 import { CancelarForm } from './CancelarForm'
 
 export default async function SucessoPage({ params }: { params: Promise<{ id: string }> }) {
@@ -32,31 +33,31 @@ export default async function SucessoPage({ params }: { params: Promise<{ id: st
         <span className="text-green-400 text-3xl">✓</span>
       </div>
       <h1 className="text-2xl font-bold tracking-tight mb-1">Agendamento confirmado</h1>
-      <p className="text-zinc-500 text-sm mb-6">Seu horário está reservado.</p>
-      <div className="rounded-2xl border border-white/10 bg-zinc-900/60 p-4 space-y-2 text-sm text-left mb-6">
+      <p className="text-zinc-400 text-sm mb-6">Seu horário está reservado.</p>
+      <Card className="p-4 space-y-2 text-sm text-left mb-6">
         <p className="flex justify-between gap-3">
-          <span className="text-zinc-500">Serviço</span>
+          <span className="text-zinc-400">Serviço</span>
           <span className="text-white font-medium text-right">
             {ag.services?.nome} · {formatBRL(ag.services?.preco ?? 0)}
           </span>
         </p>
         <p className="flex justify-between gap-3">
-          <span className="text-zinc-500">Barbeiro</span>
+          <span className="text-zinc-400">Barbeiro</span>
           <span className="text-white font-medium">{ag.staff?.nome}</span>
         </p>
         <p className="flex justify-between gap-3">
-          <span className="text-zinc-500">Data</span>
+          <span className="text-zinc-400">Data</span>
           <span className="text-white font-medium capitalize">{dataFmt}</span>
         </p>
         <p className="flex justify-between gap-3">
-          <span className="text-zinc-500">Horário</span>
+          <span className="text-zinc-400">Horário</span>
           <span className="text-white font-medium tabular-nums">{hora}</span>
         </p>
-      </div>
+      </Card>
       <div className="grid grid-cols-2 gap-2 mb-4">
         <a
           href={`/agendar/${id}/ics`}
-          className="rounded-xl border border-white/15 bg-white/5 text-white text-sm font-medium py-3 hover:bg-white/10"
+          className="rounded-xl bg-prata text-black text-sm font-medium py-3 on-prata hover:bg-prata/90"
         >
           + Calendário
         </a>
@@ -64,7 +65,7 @@ export default async function SucessoPage({ params }: { params: Promise<{ id: st
           href={`https://wa.me/?text=${msg}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="rounded-xl bg-white text-black text-sm font-semibold py-3"
+          className="rounded-xl bg-prata text-black text-sm font-semibold py-3 on-prata hover:bg-prata/90"
         >
           WhatsApp
         </a>
