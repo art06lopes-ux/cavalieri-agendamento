@@ -12,7 +12,7 @@ export default async function AgendarPage() {
   return (
     <div>
       <h1 className="text-2xl font-bold tracking-tight mb-1">Corte seu horário</h1>
-      <p className="text-zinc-400 text-sm mb-6">Leva menos de 1 minuto, sem cadastro.</p>
+      <p className="text-zinc-400 text-sm mb-6">Leva menos de 1 minuto. Pedimos seu nome e WhatsApp para concluir.</p>
       {!((services ?? []).length && (staff ?? []).length) ? (
         <div className="rounded-2xl border border-white/10 bg-zinc-900/60 p-5 text-center">
           <p className="text-white font-medium mb-1">Agenda indisponível no momento</p>

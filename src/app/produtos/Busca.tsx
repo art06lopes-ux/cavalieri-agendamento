@@ -47,7 +47,7 @@ export function Busca({ itens }: { itens: Item[] }) {
                 </div>
               )}
               <p className="text-zinc-400 text-[11px] uppercase tracking-wide">Disponível na loja</p>
-              <p className="font-semibold mt-0.5 min-w-0 break-words">{p.nome}</p>
+              <p className="font-semibold mt-0.5 min-w-0 break-words line-clamp-2 min-h-10">{p.nome}</p>
               {!!p.descricao && <p className="text-zinc-400 text-xs mt-0.5 break-words line-clamp-2">{p.descricao}</p>}
               <p className="text-prata font-semibold text-sm mt-2">{formatBRL(p.preco_venda)}</p>
               <Link href="/agendar" className="inline-block mt-2 text-xs text-prata underline hover:text-white">
