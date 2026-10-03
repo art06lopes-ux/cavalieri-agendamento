@@ -323,15 +323,17 @@ export function Wizard({ servicos, barbeiros }: { servicos: Servico[]; barbeiros
             </button>
           </div>
           {(!nome.trim() || !telefone.trim() || !nascimento || !lgpd) && (
-            <p className="text-xs text-zinc-400 mt-2">Preencha nome, data de nascimento e autorize o uso dos dados.</p>
+            <p className="text-xs text-zinc-400 mt-2">Preencha nome, WhatsApp, data de nascimento e autorize o uso dos dados.</p>
           )}
         </div>
       )}
 
       {etapa === 5 && (
         <div>
-          <p className="text-zinc-400 text-sm mb-3">6 · Confira e confirme</p>
-          <div className="rounded-2xl border border-white/10 bg-zinc-900/60 p-4 space-y-2 text-sm">
+          <div className="mb-3">
+            <Eyebrow>6 · Confira e confirme</Eyebrow>
+          </div>
+          <Card className="p-4 space-y-2 text-sm">
             <ResumoLinha k="Serviço" v={`${servico?.nome} · ${formatBRL(servico?.preco ?? 0)}`} />
             <ResumoLinha
               k="Barbeiro"
@@ -341,7 +343,7 @@ export function Wizard({ servicos, barbeiros }: { servicos: Servico[]; barbeiros
             <ResumoLinha k="Horário" v={inicioIso.slice(11, 16)} />
             <ResumoLinha k="Cliente" v={`${nome} · ${telefone}`} />
             <ResumoLinha k="Nascimento" v={nascimento} />
-          </div>
+          </Card>
           <div aria-live="polite">
             {erro && <p className="text-red-400 text-sm mt-3">{erro}</p>}
           </div>

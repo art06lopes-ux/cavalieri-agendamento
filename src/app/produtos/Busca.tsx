@@ -22,7 +22,11 @@ export function Busca({ itens }: { itens: Item[] }) {
         className="w-full rounded-xl bg-zinc-900/80 border border-white/10 px-3 py-3 text-white outline-none focus:border-white/40 placeholder:text-zinc-400 text-base mb-4"
       />
       <div aria-live="polite" aria-atomic="true">
-        <p className="text-xs text-zinc-400 mb-3">{filtrados.length} de {itens.length} produtos</p>
+        <p className="text-xs text-zinc-400 mb-3">
+          {filtrados.length === itens.length && !termo && itens.length === 1
+            ? '1 produto'
+            : `${filtrados.length} de ${itens.length} produtos`}
+        </p>
         {!filtrados.length && <p className="text-zinc-400 text-sm">Nenhum produto encontrado.</p>}
       </div>
       {!!filtrados.length && (
@@ -44,7 +48,7 @@ export function Busca({ itens }: { itens: Item[] }) {
               )}
               <p className="text-zinc-400 text-[11px] uppercase tracking-wide">Disponível na loja</p>
               <p className="font-semibold mt-0.5 min-w-0 break-words">{p.nome}</p>
-              {!!p.descricao && <p className="text-zinc-400 text-xs mt-0.5 break-words">{p.descricao}</p>}
+              {!!p.descricao && <p className="text-zinc-400 text-xs mt-0.5 break-words line-clamp-2">{p.descricao}</p>}
               <p className="text-prata font-semibold text-sm mt-2">{formatBRL(p.preco_venda)}</p>
               <Link href="/agendar" className="inline-block mt-2 text-xs text-prata underline hover:text-white">
                 Perguntar no agendamento

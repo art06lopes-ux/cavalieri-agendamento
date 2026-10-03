@@ -61,7 +61,7 @@ export function Carne() {
             >
               <div className="h-full rounded bg-prata transition-all" style={{ width: `${(cortes / 10) * 100}%` }} />
             </div>
-            <div className="flex flex-wrap justify-center gap-1.5 my-3">
+            <div className="grid grid-cols-5 gap-2 justify-items-center my-3">
               {Array.from({ length: 10 }).map((_, i) => (
                 <Selo key={i} cheio={i < saldo.atual || saldo.completo} />
               ))}
