@@ -2,6 +2,7 @@
 
 import { createAdminClient } from '@/lib/supabase/server'
 import { slotsDoDia, escolherBarbeiroLivre, barbeirosComSlot, somarMinutos, canonicalTel } from '@/lib/booking'
+import { validarNascimento, decidirUpsert } from '@/lib/cliente'
 import { todayISO } from '@/lib/dateRange'
 
 const normTel = canonicalTel
@@ -67,10 +68,13 @@ export async function reservar(input: {
   inicioIso: string
   nome: string
   telefone: string
+  dataNascimento: string
 }) {
   const tel = normTel(input.telefone)
   if (input.nome.trim().length < 2) throw new Error('Informe seu nome.')
   if (tel.length < 10 || tel.length > 13) throw new Error('WhatsApp inválido (use DDD + número).')
+  const nasc = validarNascimento(input.dataNascimento)
+  if (!nasc.ok) throw new Error(nasc.erro)
   const dia = input.inicioIso.slice(0, 10)
   const { service, porBarbeiro, duracao } = await baseDisponibilidade(dia, input.serviceId)
   void service
@@ -87,13 +91,23 @@ export async function reservar(input: {
 
   const admin = createAdminClient()
   let clientId: string | null = null
-  const { data: existentes } = await (admin as any).from('clients').select('id').in('telefone', [tel, `55${tel}`]).limit(1)
+  const { data: existentes } = await (admin as any).from('clients').select('id, nome, data_nascimento').in('telefone', [tel, `55${tel}`]).limit(1)
+  const nomeLimpo = input.nome.trim()
   if (existentes?.length) {
-    clientId = existentes[0].id
+    const existente = existentes[0] as { id: string; nome: string; data_nascimento: string | null }
+    clientId = existente.id
+    const decisao = decidirUpsert(
+      { nome: existente.nome, data_nascimento: existente.data_nascimento },
+      { nome: nomeLimpo, data_nascimento: nasc.iso },
+    )
+    if (decisao.acao === 'update') {
+      const { error: updErr } = await (admin as any).from('clients').update(decisao.patch).eq('id', existente.id)
+      if (updErr) throw new Error(updErr.message)
+    }
   } else {
     const { data: novo, error: cliErr } = await (admin as any)
       .from('clients')
-      .insert({ nome: input.nome.trim(), telefone: tel, consentimento_lgpd: true, consentimento_em: new Date().toISOString() })
+      .insert({ nome: nomeLimpo, telefone: tel, data_nascimento: nasc.iso, consentimento_lgpd: true, consentimento_em: new Date().toISOString() })
       .select('id')
       .single()
     if (cliErr) throw new Error(cliErr.message)

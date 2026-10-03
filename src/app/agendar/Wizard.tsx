@@ -42,6 +42,8 @@ export function Wizard({ servicos, barbeiros }: { servicos: Servico[]; barbeiros
   const [inicioIso, setInicioIso] = useState('')
   const [nome, setNome] = useState('')
   const [telefone, setTelefone] = useState('')
+  const [nascimento, setNascimento] = useState('')
+  const [lgpd, setLgpd] = useState(false)
   const [erro, setErro] = useState('')
   const [enviando, setEnviando] = useState(false)
 
@@ -83,7 +85,7 @@ export function Wizard({ servicos, barbeiros }: { servicos: Servico[]; barbeiros
     setErro('')
     setEnviando(true)
     try {
-      const { id } = await reservar({ serviceId, staffId, inicioIso, nome, telefone })
+      const { id } = await reservar({ serviceId, staffId, inicioIso, nome, telefone, dataNascimento: nascimento })
       router.push(`/agendar/${id}/sucesso` as never)
     } catch (e: any) {
       if (e?.message === 'HORARIO_OCUPADO') {
@@ -285,6 +287,11 @@ export function Wizard({ servicos, barbeiros }: { servicos: Servico[]; barbeiros
               className="w-full rounded-xl bg-zinc-900/80 border border-white/10 px-3 py-3 text-white outline-none focus:border-white/40 text-base"
             />
           </div>
+          <div>
+            <label className="block text-xs font-medium text-zinc-500 mb-1.5">Data de nascimento *</label>
+            <input type="date" value={nascimento} max={new Date().toISOString().slice(0, 10)} onChange={(e) => setNascimento(e.target.value)} className="w-full rounded-xl bg-zinc-900/80 border border-white/10 px-3 py-3 text-white outline-none focus:border-white/40 text-base" />
+          </div>
+          <label className="flex gap-2 text-xs text-zinc-400"><input type="checkbox" checked={lgpd} onChange={(e) => setLgpd(e.target.checked)} /> Autorizo salvar meus dados para agendamento e fidelidade (LGPD).</label>
           {erro && <p className="text-red-400 text-sm">{erro}</p>}
           <div className="flex gap-2">
             <button type="button" onClick={() => setEtapa(3)} className="text-xs text-zinc-500 hover:text-white px-2">
@@ -292,7 +299,7 @@ export function Wizard({ servicos, barbeiros }: { servicos: Servico[]; barbeiros
             </button>
             <button
               type="button"
-              disabled={!nome.trim() || !telefone.trim()}
+              disabled={!nome.trim() || !telefone.trim() || !nascimento || !lgpd}
               onClick={() => setEtapa(5)}
               className="flex-1 rounded-xl bg-white text-black text-sm font-semibold py-3 disabled:opacity-40"
             >
@@ -314,6 +321,7 @@ export function Wizard({ servicos, barbeiros }: { servicos: Servico[]; barbeiros
             <ResumoLinha k="Data" v={fmtDataLonga(dia)} />
             <ResumoLinha k="Horário" v={inicioIso.slice(11, 16)} />
             <ResumoLinha k="Cliente" v={`${nome} · ${telefone}`} />
+            <ResumoLinha k="Nascimento" v={nascimento} />
           </div>
           {erro && <p className="text-red-400 text-sm mt-3">{erro}</p>}
           <div className="flex gap-2 mt-4">
