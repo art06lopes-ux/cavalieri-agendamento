@@ -7,8 +7,7 @@ Factual: só texto, sem anexos binários. As imagens não entram no repositório
 
 ### Layout por rota e largura (screenshot real)
 
-4 rotas × 3 larguras de viewport (320, 390, 1440 px) como base da rodada, 14 imagens
-capturadas no total.
+4 rotas × 3 larguras de viewport (320, 390, 1440 px) = 12 imagens capturadas.
 
 | Rota | 320 | 390 | 1440 |
 | --- | --- | --- | --- |
@@ -35,8 +34,8 @@ os dois sentidos passam com folga.
 
 ### Suíte automatizada
 
-- `npm test` — 52/52 testes passando na altura da revisão (7 arquivos de teste; a rodada
-  final adicionou `src/app/fidelidade/actions.test.ts`, com 6 casos, totalizando 58/58).
+- `npm test` — 58/58 testes passando em 7 arquivos de teste (o sétimo é
+  `src/app/fidelidade/actions.test.ts`, com 6 casos).
 - `npm run typecheck` — sem erros.
 - `npm run build` — build de produção com 8 rotas geradas.
 
