@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-black text-white">
       <section className="relative h-[62vh] min-h-[420px]">
-        <Image src="/fachada-noite.jpg" alt="Fachada da Cavalieri Barbearia à noite" fill priority className="object-cover" />
+        <Image src="/fachada-noite.jpg" alt="Fachada da Cavalieri Barbearia à noite" fill priority className="object-cover object-center" />
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/55 to-black/20" />
         <div className="absolute inset-x-0 bottom-0 p-6 max-w-md mx-auto">
           <Eyebrow>BARBEARIA · ESTILO · PRECISÃO</Eyebrow>

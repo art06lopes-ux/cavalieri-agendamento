@@ -13,10 +13,15 @@ export function Carne() {
     setCarregando(true)
     try {
       const r = await saldoFidelidade(tel)
-      setSaldo(r)
-    } catch (e: any) {
+      if (r.ok) {
+        setSaldo(r)
+        return
+      }
       setSaldo(null)
-      setErro(e?.message === 'NAO_ENCONTRADO' ? 'Não encontrei cadastro para este número — faça um agendamento com nome, nascimento e Zap.' : (e?.message ?? 'Não consegui buscar. Tente de novo.'))
+      setErro(r.erro === 'invalido' ? 'WhatsApp inválido (use DDD + número).' : 'Não encontrei cadastro para este número — faça um agendamento com nome, nascimento e Zap.')
+    } catch {
+      setSaldo(null)
+      setErro('Não consegui buscar. Tente de novo.')
     } finally {
       setCarregando(false)
     }

@@ -3,12 +3,16 @@ import { createAdminClient } from '@/lib/supabase/server'
 import { canonicalTel } from '@/lib/booking'
 import { calcularCarne } from '@/lib/fidelidade'
 
-export async function saldoFidelidade(telefone: string) {
+type ResultadoSaldo =
+  | { ok: false; erro: 'invalido' | 'nao_encontrado' }
+  | { ok: true; nome: string; total: number; atual: number; faltam: number; gratuitos: number; completo: boolean }
+
+export async function saldoFidelidade(telefone: string): Promise<ResultadoSaldo> {
   const tel = canonicalTel(telefone)
-  if (tel.length < 10 || tel.length > 13) throw new Error('WhatsApp inválido (use DDD + número).')
+  if (tel.length < 10 || tel.length > 13) return { ok: false, erro: 'invalido' }
   const admin = createAdminClient()
   const { data: cli } = await (admin as any).from('clients').select('id, nome').in('telefone', [tel, `55${tel}`]).limit(1)
-  if (!cli?.length) throw new Error('NAO_ENCONTRADO')
+  if (!cli?.length) return { ok: false, erro: 'nao_encontrado' }
   const clientId = cli[0].id as string
   const [{ data: contadores }, { data: cortesias }] = await Promise.all([
     (admin as any).from('client_loyalty_counters').select('contador, services!inner(fidelidade_a_cada)').eq('client_id', clientId),
@@ -16,5 +20,5 @@ export async function saldoFidelidade(telefone: string) {
   ])
   const norm = ((contadores ?? []) as any[]).map((c) => ({ contador: c.contador, fidelidade_a_cada: c.services?.fidelidade_a_cada ?? 0 }))
   const calc = calcularCarne(norm, (cortesias ?? []).length)
-  return { nome: cli[0].nome as string, ...calc }
+  return { ok: true, nome: cli[0].nome as string, ...calc }
 }
