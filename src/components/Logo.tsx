@@ -3,15 +3,15 @@ import Image from 'next/image'
 export function LogoMark({ size = 40, className = '' }: { size?: number; className?: string }) {
   return (
     <span
-      className={`relative inline-flex rounded-full overflow-hidden bg-black ring-1 ring-white/15 shrink-0 ${className}`}
+      className={`relative inline-flex rounded-2xl overflow-hidden bg-black ring-1 ring-white/15 shrink-0 ${className}`}
       style={{ width: size, height: size }}
     >
       <Image
-        src="/logo.png"
+        src="/logo-cavalieri.png"
         alt="Cavalieri Barbearia"
         fill
         sizes={`${size}px`}
-        className="object-contain p-[12%]"
+        className="object-contain p-[6%]"
       />
     </span>
   )
@@ -21,7 +21,7 @@ export function LogoFull({ height = 160, className = '' }: { height?: number; cl
   const width = Math.round(height * (605 / 587))
   return (
     <Image
-      src="/logo.png"
+      src="/logo-cavalieri.png"
       alt="Cavalieri Barbearia — Estilo, precisão, presença."
       width={width}
       height={height}

@@ -30,7 +30,7 @@ export function CancelarForm({ id }: { id: string }) {
   return (
     <div className="rounded-2xl border border-white/10 bg-zinc-900/60 p-4 text-left">
       <p className="text-white text-sm font-medium mb-1">Precisou desmarcar?</p>
-      <p className="text-zinc-500 text-xs mb-3">Confirme seu WhatsApp para cancelar (até 2h antes).</p>
+      <p className="text-zinc-400 text-xs mb-3">Confirme seu WhatsApp para cancelar (até 2h antes).</p>
       <div className="flex gap-2">
         <input
           value={telefone}
@@ -43,7 +43,7 @@ export function CancelarForm({ id }: { id: string }) {
           type="button"
           disabled={enviando || !telefone.trim()}
           onClick={enviar}
-          className="rounded-xl border border-red-900 bg-red-950 text-red-300 text-sm px-4 disabled:opacity-50 hover:bg-red-900 shrink-0"
+          className="rounded-xl border border-red-900 bg-red-950 text-red-200 text-sm font-medium px-4 hover:border-red-700 focus-visible:outline-red-300 disabled:opacity-50 shrink-0"
         >
           {enviando ? '…' : 'Cancelar'}
         </button>

@@ -3,12 +3,14 @@
 :root {
   --background: #09090b;
   --foreground: #fafafa;
+  --prata: #c0c5ce;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-inter);
+  --color-prata: var(--prata);
 }
 
 body {
@@ -21,7 +23,7 @@ body {
 }
 
 *:focus-visible {
-  outline: 2px solid rgba(255, 255, 255, 0.4);
+  outline: 2px solid var(--prata);
   outline-offset: 2px;
 }
 
@@ -31,3 +33,14 @@ body {
 }
 
 .pb-safe { padding-bottom: env(safe-area-inset-bottom); }
+
+.on-prata:focus-visible { outline-color: #000; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
