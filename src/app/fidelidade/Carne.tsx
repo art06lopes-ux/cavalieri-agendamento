@@ -1,5 +1,6 @@
 'use client'
 import { useState } from 'react'
+import { Selo } from '@/components/ui'
 import { saldoFidelidade } from './actions'
 
 export function Carne() {
@@ -20,26 +21,51 @@ export function Carne() {
       setCarregando(false)
     }
   }
+  const cortes = saldo ? (saldo.completo ? 10 : saldo.atual) : 0
   return (
     <div className="space-y-4">
-      <div className="flex gap-2">
-        <input value={tel} onChange={(e) => setTel(e.target.value)} placeholder="(65) 99999-0000" inputMode="tel" className="flex-1 rounded-xl bg-zinc-900/80 border border-white/10 px-3 py-3 text-white outline-none focus:border-white/40 text-base" />
-        <button type="button" disabled={carregando || !tel.trim()} onClick={buscar} className="rounded-xl bg-white text-black text-sm font-semibold px-4 disabled:opacity-40">Ver</button>
-      </div>
-      {erro && <p className="text-red-400 text-sm">{erro}</p>}
-      {saldo && (
-        <div className="rounded-2xl border border-white/10 bg-zinc-900/60 p-4">
-          <p className="font-semibold">{saldo.nome} — {saldo.total} cortes</p>
-          <div className="grid grid-cols-10 gap-1 my-3">
-            {Array.from({ length: 10 }).map((_, i) => (
-              <span key={i} className={`h-6 rounded-full ${i < saldo.atual || saldo.completo ? 'bg-white' : 'bg-white/10'}`} />
-            ))}
-          </div>
-          {saldo.gratuitos > 0
-            ? <p className="text-white text-sm font-semibold">Você tem {saldo.gratuitos} corte(s) grátis — fale no balcão.</p>
-            : <p className="text-zinc-400 text-sm">{saldo.completo ? 'Carnê completo! Fale no balcão.' : `Faltam ${saldo.faltam} cortes para 1 grátis (${saldo.atual}/10).`}</p>}
+      <div>
+        <label htmlFor="carne-whatsapp" className="block text-xs text-zinc-400 mb-1.5">WhatsApp</label>
+        <div className="flex gap-2">
+          <input
+            id="carne-whatsapp"
+            value={tel}
+            onChange={(e) => setTel(e.target.value)}
+            placeholder="(65) 99999-0000"
+            inputMode="tel"
+            className="flex-1 min-w-0 rounded-xl bg-zinc-900/80 border border-white/10 px-3 py-3 text-white outline-none focus:border-white/40 placeholder:text-zinc-400 text-base"
+          />
+          <button type="button" disabled={carregando || !tel.trim()} onClick={buscar} className="shrink-0 rounded-xl bg-prata text-black text-sm font-semibold px-4 disabled:opacity-40 on-prata">
+            {carregando ? 'Buscando…' : 'Ver'}
+          </button>
         </div>
-      )}
+      </div>
+      <div aria-live="polite">
+        {erro && <p className="text-red-400 text-sm">{erro}</p>}
+        {saldo && (
+          <div className="rounded-2xl border border-white/10 bg-zinc-900/60 p-4">
+            <p className="font-semibold">{saldo.nome} — {saldo.total} cortes</p>
+            <div
+              role="progressbar"
+              aria-valuemin={0}
+              aria-valuemax={10}
+              aria-valuenow={cortes}
+              aria-label="Cortes do carnê"
+              className="h-2 w-full rounded bg-white/15 overflow-hidden my-3"
+            >
+              <div className="h-full rounded bg-prata transition-all" style={{ width: `${(cortes / 10) * 100}%` }} />
+            </div>
+            <div className="flex flex-wrap justify-center gap-1.5 my-3">
+              {Array.from({ length: 10 }).map((_, i) => (
+                <Selo key={i} cheio={i < saldo.atual || saldo.completo} />
+              ))}
+            </div>
+            {saldo.gratuitos > 0
+              ? <p className="text-prata text-sm font-semibold">Você tem {saldo.gratuitos} corte(s) grátis — fale no balcão.</p>
+              : <p className="text-zinc-400 text-sm">{saldo.completo ? 'Carnê completo! Fale no balcão.' : `Faltam ${saldo.faltam} cortes para 1 grátis (${saldo.atual}/10).`}</p>}
+          </div>
+        )}
+      </div>
     </div>
   )
 }
