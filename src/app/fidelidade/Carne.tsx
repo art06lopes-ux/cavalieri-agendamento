@@ -14,7 +14,8 @@ export function Carne() {
     try {
       const r = await saldoFidelidade(tel)
       if (r.ok) {
-        setSaldo(r)
+        const { ok: _descartado, ...saldo } = r
+        setSaldo(saldo)
         return
       }
       setSaldo(null)
