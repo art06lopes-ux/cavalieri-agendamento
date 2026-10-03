@@ -9,6 +9,7 @@ export const metadata: Metadata = {
   title: "Cavalieri Barbearia",
   description: "Agende, veja produtos e acompanhe sua fidelidade",
   manifest: "/manifest.webmanifest",
+  icons: { apple: '/logo.png' },
 };
 
 export const viewport: Viewport = {
