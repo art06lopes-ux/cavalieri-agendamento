@@ -57,7 +57,7 @@ export default async function SucessoPage({ params }: { params: Promise<{ id: st
       <div className="grid grid-cols-2 gap-2 mb-4">
         <a
           href={`/agendar/${id}/ics`}
-          className="rounded-xl bg-prata text-black text-sm font-medium py-3 on-prata hover:bg-prata/90"
+          className="rounded-xl border border-white/20 text-white text-sm font-medium py-3 hover:border-white/40"
         >
           + Calendário
         </a>
