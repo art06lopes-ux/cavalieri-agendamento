@@ -69,12 +69,14 @@ export async function reservar(input: {
   nome: string
   telefone: string
   dataNascimento: string
+  lgpd: boolean
 }) {
   const tel = normTel(input.telefone)
   if (input.nome.trim().length < 2) throw new Error('Informe seu nome.')
   if (tel.length < 10 || tel.length > 13) throw new Error('WhatsApp inválido (use DDD + número).')
   const nasc = validarNascimento(input.dataNascimento)
   if (!nasc.ok) throw new Error(nasc.erro)
+  if (!input.lgpd) throw new Error('É preciso autorizar o uso dos dados (LGPD).')
   const dia = input.inicioIso.slice(0, 10)
   const { service, porBarbeiro, duracao } = await baseDisponibilidade(dia, input.serviceId)
   void service
@@ -91,17 +93,22 @@ export async function reservar(input: {
 
   const admin = createAdminClient()
   let clientId: string | null = null
-  const { data: existentes } = await (admin as any).from('clients').select('id, nome, data_nascimento').in('telefone', [tel, `55${tel}`]).limit(1)
+  const { data: existentes } = await (admin as any).from('clients').select('id, nome, data_nascimento, consentimento_lgpd').in('telefone', [tel, `55${tel}`]).limit(1)
   const nomeLimpo = input.nome.trim()
   if (existentes?.length) {
-    const existente = existentes[0] as { id: string; nome: string; data_nascimento: string | null }
+    const existente = existentes[0] as { id: string; nome: string; data_nascimento: string | null; consentimento_lgpd: boolean | null }
     clientId = existente.id
     const decisao = decidirUpsert(
       { nome: existente.nome, data_nascimento: existente.data_nascimento },
       { nome: nomeLimpo, data_nascimento: nasc.iso },
     )
-    if (decisao.acao === 'update') {
-      const { error: updErr } = await (admin as any).from('clients').update(decisao.patch).eq('id', existente.id)
+    const patch = { ...decisao.patch } as Record<string, string | boolean>
+    if (!existente.consentimento_lgpd) {
+      patch.consentimento_lgpd = true
+      patch.consentimento_em = new Date().toISOString()
+    }
+    if (Object.keys(patch).length || decisao.acao === 'update') {
+      const { error: updErr } = await (admin as any).from('clients').update(patch).eq('id', existente.id)
       if (updErr) throw new Error(updErr.message)
     }
   } else {

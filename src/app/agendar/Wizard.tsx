@@ -85,7 +85,7 @@ export function Wizard({ servicos, barbeiros }: { servicos: Servico[]; barbeiros
     setErro('')
     setEnviando(true)
     try {
-      const { id } = await reservar({ serviceId, staffId, inicioIso, nome, telefone, dataNascimento: nascimento })
+      const { id } = await reservar({ serviceId, staffId, inicioIso, nome, telefone, dataNascimento: nascimento, lgpd })
       router.push(`/agendar/${id}/sucesso` as never)
     } catch (e: any) {
       if (e?.message === 'HORARIO_OCUPADO') {
