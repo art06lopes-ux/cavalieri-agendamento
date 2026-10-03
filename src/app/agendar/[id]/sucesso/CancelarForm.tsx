@@ -30,7 +30,7 @@ export function CancelarForm({ id }: { id: string }) {
   return (
     <div className="rounded-2xl border border-white/10 bg-zinc-900/60 p-4 text-left">
       <p className="text-white text-sm font-medium mb-1">Precisou desmarcar?</p>
-      <p className="text-zinc-500 text-xs mb-3">Confirme seu WhatsApp para cancelar (até 2h antes).</p>
+      <p className="text-zinc-400 text-xs mb-3">Confirme seu WhatsApp para cancelar (até 2h antes).</p>
       <div className="flex gap-2">
         <input
           value={telefone}
