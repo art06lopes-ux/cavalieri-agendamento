@@ -257,11 +257,9 @@ export function Wizard({ servicos, barbeiros }: { servicos: Servico[]; barbeiros
               <p className="text-zinc-400 text-xs">Tente outro dia ou outro barbeiro.</p>
             </div>
           )}
-          {erro && (
-            <div aria-live="polite">
-              <p className="text-red-400 text-sm mt-3">{erro}</p>
-            </div>
-          )}
+          <div aria-live="polite">
+            {erro && <p className="text-red-400 text-sm mt-3">{erro}</p>}
+          </div>
           <div className="flex gap-2 mt-4">
             <button type="button" onClick={() => setEtapa(2)} className="text-xs text-zinc-400 hover:text-white px-2">
               ← dia
@@ -308,11 +306,9 @@ export function Wizard({ servicos, barbeiros }: { servicos: Servico[]; barbeiros
             <input type="date" value={nascimento} max={new Date().toISOString().slice(0, 10)} onChange={(e) => setNascimento(e.target.value)} className="w-full rounded-xl bg-zinc-900/80 border border-white/10 px-3 py-3 text-white outline-none focus:border-white/40 text-base" />
           </div>
           <label className="flex gap-2 text-xs text-zinc-400"><input type="checkbox" checked={lgpd} onChange={(e) => setLgpd(e.target.checked)} /> Autorizo salvar meus dados para agendamento e fidelidade (LGPD).</label>
-          {erro && (
-            <div aria-live="polite">
-              <p className="text-red-400 text-sm">{erro}</p>
-            </div>
-          )}
+          <div aria-live="polite">
+            {erro && <p className="text-red-400 text-sm">{erro}</p>}
+          </div>
           <div className="flex gap-2">
             <button type="button" onClick={() => setEtapa(3)} className="text-xs text-zinc-400 hover:text-white px-2">
               ← horário
@@ -346,11 +342,9 @@ export function Wizard({ servicos, barbeiros }: { servicos: Servico[]; barbeiros
             <ResumoLinha k="Cliente" v={`${nome} · ${telefone}`} />
             <ResumoLinha k="Nascimento" v={nascimento} />
           </div>
-          {erro && (
-            <div aria-live="polite">
-              <p className="text-red-400 text-sm mt-3">{erro}</p>
-            </div>
-          )}
+          <div aria-live="polite">
+            {erro && <p className="text-red-400 text-sm mt-3">{erro}</p>}
+          </div>
           <div className="flex gap-2 mt-4">
             <button type="button" onClick={() => setEtapa(4)} className="text-xs text-zinc-400 hover:text-white px-2">
               ← dados
